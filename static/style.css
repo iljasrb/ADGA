@@ -50,11 +50,18 @@ hr { margin: 1.5rem 0; border: 0; border-top: 1px solid var(--line); }
 /* device page: menu on the left, the guide on the right */
 .layout { display: grid; grid-template-columns: minmax(13rem, 17rem) minmax(0, 1fr); gap: 2rem; align-items: start; }
 .layout > * { min-width: 0; }
-aside nav.side { display: grid; gap: .1rem; }
-nav.side a { padding: .3rem .6rem; border-left: 2px solid transparent; color: var(--fg); font-size: .95rem; text-decoration: none; }
+/* tree: device on top, guides hanging off a trunk, flasher set apart */
+aside nav.side { font-size: .95rem; }
+nav.side a { display: block; padding: .3rem .6rem; border-left: 2px solid transparent; color: var(--fg); text-decoration: none; }
 nav.side a:hover { background: var(--hover); }
 nav.side a[aria-current="page"] { border-left-color: var(--link); background: var(--tile); font-weight: 600; }
-nav.side a.ext { color: var(--link); }
+nav.side a.root { font-weight: 600; }
+nav.side ul { list-style: none; margin: .15rem 0 0; padding: 0 0 0 .9rem; }
+nav.side li { position: relative; margin: 0; padding-left: 1.1rem; }
+nav.side li::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 1px solid var(--edge); }
+nav.side li:last-child::before { bottom: 50%; }
+nav.side li::after { content: ""; position: absolute; left: 0; top: 50%; width: .8rem; border-top: 1px solid var(--edge); }
+nav.side a.ext { margin-top: .75rem; border-top: 1px solid var(--line); color: var(--link); }
 
 .devices, .guides { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: .75rem; }
 .device, .guides li { padding: .75rem 1rem; background: var(--tile); border: 1px solid var(--line); margin: 0; }
@@ -132,9 +139,9 @@ footer p { margin: 0 0 .3rem; }
 
 @media (max-width: 900px) {
 	.layout { grid-template-columns: 1fr; gap: 1.5rem; }
-	aside nav.side { display: flex; flex-wrap: wrap; gap: .25rem; }
-	nav.side a { border: 1px solid var(--line); }
-	nav.side a[aria-current="page"] { border-color: var(--link); }
+	/* on one column the tree root would repeat the page title: shrink it to a label */
+	nav.side a.root { font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+	nav.side ul { margin-top: 0; }
 	.search-container { width: 100%; margin-left: 0; }
 	.search-container input { width: 100%; }
 	.search-results { width: 100%; min-width: 0; position: static; margin-top: .5rem; }
