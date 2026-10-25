@@ -3,3 +3,5 @@
 /.zola/
 .DS_Store
 __pycache__/
+.wrangler/
+node_modules/

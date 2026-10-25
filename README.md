@@ -21,18 +21,19 @@ node test_search.mjs
 
 ## Hosting
 
-Cloudflare Pages, two projects from this repository, both with build command `./build.sh` and output
-directory `public`:
+Cloudflare Workers with static assets, two Workers from this repository, both built with
+`./build.sh`:
 
-| Project | URL | Environment |
-|---|---|---|
-| `devices` | `https://devices.flac.moe` (custom domain) | — |
-| `devices-mirror` | `https://devices-mirror.pages.dev` | `BASE_URL=https://devices-mirror.pages.dev` |
+| Worker | URL | Deploy command | Environment |
+|---|---|---|---|
+| `adga` | `https://devices.flac.moe` (custom domain) | `npx wrangler deploy` | — |
+| `adga-mirror` | `https://adga-mirror.<account>.workers.dev` | `npx wrangler deploy --name adga-mirror` | `BASE_URL=https://adga-mirror.<account>.workers.dev` |
 
-Both deploy on every push, so the mirror is a working copy: its own links, search index and feed.
-`<link rel="canonical">` always points at `devices.flac.moe` (`[extra] canonical_url` in `zola.toml`),
-so only the primary gets indexed. Set `DRAFTS=1` on the preview environment so a pull request shows
-the draft pages it adds.
+`wrangler.jsonc` uploads `public/` and serves `404.html` for unknown paths. Both Workers build on
+every push, so the mirror is a working copy: its own links, search index and feed.
+`<link rel="canonical">` always points at `devices.flac.moe` (`[extra] canonical_url` in
+`zola.toml`), so only the primary gets indexed. Set `DRAFTS=1` on the preview environment so a pull
+request shows the draft pages it adds.
 
 ## Adding a device
 
