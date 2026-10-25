@@ -3,7 +3,7 @@
 
 {% block body %}
 <h1>{{ config.title }}</h1>
-<div class="prose intro">{{ section.content | safe }}</div>
+<div class="prose">{{ section.content | safe }}</div>
 
 <ul class="devices">
     {% for sub in section.subsections %}

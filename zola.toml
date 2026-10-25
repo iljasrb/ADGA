@@ -1,9 +1,6 @@
 base_url = "https://devices.flac.moe"
 title = "Android device guides"
 description = "Hand-written, hand-verified guides for Android devices."
-author = "iljasrb"
-
-compile_sass = false
 generate_feeds = true
 feed_filenames = ["rss.xml"]
 build_search_index = true

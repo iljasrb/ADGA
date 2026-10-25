@@ -20,9 +20,9 @@ COAUTHOR = re.compile(r"^co-authored-by:\s*(.*?)\s*<([^>]+)>", re.I | re.M)
 BOTS = {"github-actions", "dependabot", "renovate", "web-flow"}
 
 
-def load_map(path=None):
+def load_map():
     mapping = {}
-    path = path or os.path.join(ROOT, "contributors.map")
+    path = os.path.join(ROOT, "contributors.map")
     if os.path.exists(path):
         with open(path, encoding="utf-8") as map_file:
             for line in map_file:
@@ -62,8 +62,6 @@ def parse_log(raw, mapping):
             if is_bot(login):
                 continue
             key = login or person_name.lower()
-            if not key:
-                continue
             seen[key] += 1
             names.setdefault(key, (login, person_name))
     return [
@@ -105,11 +103,14 @@ def build():
                 continue
             rel_path = os.path.relpath(os.path.join(dirpath, filename), CONTENT).replace(os.sep, "/")
             people = commits_for(rel_path, mapping)
-            pages[rel_path] = people
+            # a section's own file is read as a section, never through the pages map
+            if filename != "_index.md":
+                pages[rel_path] = people
             parts = rel_path.split("/")[:-1]
             for depth in range(len(parts) + 1):
                 per_dir.setdefault("/".join(parts[:depth]), []).append(people)
-    sections = {"/" + (directory + "/" if directory else ""): merge(groups) for directory, groups in per_dir.items()}
+    # the root aggregate is never rendered: the front page lists devices only
+    sections = {"/" + directory + "/": merge(groups) for directory, groups in per_dir.items() if directory}
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as out:
         json.dump({"pages": pages, "sections": sections}, out, indent=1, ensure_ascii=False)

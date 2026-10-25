@@ -81,7 +81,7 @@ nav.side a.ext { margin-top: .75rem; border-top: 1px solid var(--line); color: v
 .prose > :last-child { margin-bottom: 0; }
 .prose code, .prose pre { font-family: var(--mono); font-size: .875rem; }
 .prose code { padding: .1rem .3rem; background: var(--tile); border: 1px solid var(--line); }
-.prose pre { position: relative; padding: .75rem; background: var(--tile); border: 1px solid var(--line); overflow-x: auto; }
+.prose pre { position: relative; padding: .75rem; border: 1px solid var(--line); overflow-x: auto; }
 .prose pre code { padding: 0; background: none; border: 0; }
 .copy-code-btn {
 	position: absolute; top: .4rem; right: .4rem;

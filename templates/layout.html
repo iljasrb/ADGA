@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
-<meta name="description" content="{% block description %}{% if page and page.description %}{{ page.description }}{% elif section and section.description %}{{ section.description }}{% else %}{{ config.description }}{% endif %}{% endblock %}">
+<meta name="description" content="{% if page and page.description %}{{ page.description }}{% elif section and section.description %}{{ section.description }}{% else %}{{ config.description }}{% endif %}">
 <link rel="canonical" href="{{ config.base_url }}{{ current_path }}">
 <title>{% block title %}{{ config.title }}{% endblock %}</title>
 <link rel="alternate" type="application/rss+xml" title="{{ config.title }}" href="{{ get_url(path='rss.xml') }}">
@@ -52,6 +51,10 @@
     <ul class="search-results" id="search-results" aria-label="Results"></ul>
     <p class="search-hint" id="search-hint">↑↓ move · ↵ open · esc close</p>
 </dialog>
+
+<template id="search-result">
+    <li><a href=""><span class="crumb"></span><span class="title"></span><span class="snippet"></span></a></li>
+</template>
 
 <script type="module" src="{{ get_url(path='search.js') }}"></script>
 <script src="{{ get_url(path='copy-code.js') }}" defer></script>

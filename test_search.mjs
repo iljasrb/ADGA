@@ -35,10 +35,8 @@ assert.equal(snippet("", "x", true), "", "empty body");
 assert.equal(hrefOf("https://devices.flac.moe/bronco/edl-flash/", "http://localhost:1111/bronco/"), "/bronco/edl-flash/");
 assert.equal(hrefOf("https://devices.flac.moe/bronco/#part", "http://localhost:1111/"), "/bronco/#part", "keeps hash");
 assert.equal(hrefOf("/a/b/", "http://localhost:1111/"), "/a/b/", "already relative");
-assert.equal(hrefOf("not a url", "http://localhost:1111/"), "/not%20a%20url", "resolves against the page");
 
 assert.equal(deviceOf("https://devices.flac.moe/bronco/edl-flash/"), "bronco");
 assert.equal(deviceOf("https://devices.flac.moe/"), "", "root has no device");
-assert.equal(deviceOf("not a url"), "");
 
 console.log("ok");

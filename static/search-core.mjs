@@ -41,19 +41,11 @@ export function snippet(body, query, matchedBody, width = 80) {
 
 /** The same page on whatever host is serving it: the index stores absolute site URLs. */
 export function hrefOf(url, base) {
-  try {
-    const parsed = new URL(url, base);
-    return parsed.pathname + parsed.search + parsed.hash;
-  } catch {
-    return url;
-  }
+  const parsed = new URL(url, base);
+  return parsed.pathname + parsed.search + parsed.hash;
 }
 
 /** First path segment of a page URL: the device codename. */
 export function deviceOf(url) {
-  try {
-    return decodeURIComponent(new URL(url).pathname.split("/").filter(Boolean)[0] || "");
-  } catch {
-    return "";
-  }
+  return decodeURIComponent(new URL(url).pathname.split("/").filter(Boolean)[0] || "");
 }

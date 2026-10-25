@@ -3,12 +3,12 @@
 import { deviceOf, hrefOf, search, snippet } from "./search-core.mjs";
 
 const INDEX_URL = "/search_index.en.json";
-const MAX_RESULTS = 12;
 
 const dialog = document.getElementById("search-dialog");
 const input = document.getElementById("search-input");
 const list = document.getElementById("search-results");
 const status = document.getElementById("search-status");
+const rowTemplate = document.getElementById("search-result");
 const hint = document.getElementById("search-hint");
 const trigger = document.getElementById("search-open");
 const closeButton = document.getElementById("search-close");
@@ -65,7 +65,7 @@ if (dialog && input && list) {
       return;
     }
 
-    hits = search(index, q, MAX_RESULTS);
+    hits = search(index, q);
     list.replaceChildren();
     hint.textContent = `${hits.length} ${hits.length === 1 ? "result" : "results"} · ↑↓ move · ↵ open · esc close`;
     status.textContent = `${hits.length} results for ${query.trim()}`;
@@ -76,34 +76,26 @@ if (dialog && input && list) {
     }
 
     for (const hit of hits) {
-      const link = document.createElement("a");
+      const row = rowTemplate.content.firstElementChild.cloneNode(true);
+      const link = row.firstElementChild;
+      const crumb = link.querySelector(".crumb");
+      const title = link.querySelector(".title");
+      const line = link.querySelector(".snippet");
+
       link.href = hrefOf(hit.item.url, location.href);
 
       const device = deviceOf(hit.item.url);
-      if (device) {
-        const crumb = document.createElement("span");
-        crumb.className = "crumb";
-        crumb.textContent = device;
-        link.append(crumb);
-      }
+      if (device) crumb.textContent = device;
+      else crumb.remove();
 
-      const title = document.createElement("span");
-      title.className = "title";
       markInto(title, hit.item.title, q);
-      link.append(title);
 
       const body = snippet(hit.item.body, q, hit.matchedBody);
-      if (body) {
-        const line = document.createElement("span");
-        line.className = "snippet";
-        markInto(line, body, q);
-        link.append(line);
-      }
+      if (body) markInto(line, body, q);
+      else line.remove();
 
       link.addEventListener("click", () => dialog.close());
-      const item = document.createElement("li");
-      item.append(link);
-      list.append(item);
+      list.append(row);
     }
   }
 
