@@ -51,6 +51,7 @@
 
         <div class="prose">{{ page.content | safe }}</div>
 
+        {% set heading = "Contributors" %}
         {% include "partials/contributors.html" %}
     </article>
 {% if is_device %}</div>{% endif %}

@@ -28,6 +28,8 @@
         </ul>
         {% endif %}
 
+        {% set heading = "Contributors to this device" %}
+        {% if not is_device %}{% set heading = "Contributors" %}{% endif %}
         {% include "partials/contributors.html" %}
     </div>
 {% if is_device %}</div>{% endif %}

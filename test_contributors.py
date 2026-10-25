@@ -1,6 +1,6 @@
 """python3 test_contributors.py"""
 
-from contributors import is_bot, login_of, merge, parse_log
+from contributors import group_by_dir, is_bot, login_of, merge, parse_log
 
 SEP, FIELD = "\x1e", "\x1f"
 
@@ -26,5 +26,15 @@ assert unnamed == [{"login": None, "name": "Bob", "initial": "B", "count": 1}], 
 
 merged = merge([[{"login": "ana", "name": "Ana", "count": 1}], [{"login": "ana", "name": "Ana", "count": 2}]])
 assert merged == [{"login": "ana", "name": "Ana", "initial": "A", "count": 3}], merged
+
+# a device page shows everyone who touched any file in the folder
+sections = group_by_dir({
+    "bronco/_index.md": [{"login": "ana", "name": "Ana", "count": 1}],
+    "bronco/edl-flash.md": [{"login": "bob", "name": "Bob", "count": 1}],
+    "bronco/nested/page.md": [{"login": "ana", "name": "Ana", "count": 2}],
+    "about/index.md": [{"login": "cara", "name": "Cara", "count": 1}],
+})
+assert list(sections) == ["/bronco/", "/bronco/nested/", "/about/"], sections
+assert [(person["login"], person["count"]) for person in sections["/bronco/"]] == [("ana", 3), ("bob", 1)], sections["/bronco/"]
 
 print("ok")

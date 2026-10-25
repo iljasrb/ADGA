@@ -91,24 +91,32 @@ def commits_for(rel_path, mapping):
     return parse_log(raw, mapping)
 
 
+def group_by_dir(files):
+    """One contributor list per directory, merged over every file below it."""
+    per_dir = {}
+    for rel_path, people in files.items():
+        parts = rel_path.split("/")[:-1]
+        for depth in range(len(parts) + 1):
+            per_dir.setdefault("/".join(parts[:depth]), []).append(people)
+    # no root aggregate, the front page only lists devices
+    return {"/" + directory + "/": merge(groups) for directory, groups in per_dir.items() if directory}
+
+
 def build():
     mapping = load_map()
     pages = {}
-    per_dir = {}
+    files = {}
     for dirpath, _, filenames in os.walk(CONTENT):
         for filename in sorted(filenames):
             if not filename.endswith(".md"):
                 continue
             rel_path = os.path.relpath(os.path.join(dirpath, filename), CONTENT).replace(os.sep, "/")
             people = commits_for(rel_path, mapping)
+            files[rel_path] = people
             # section indexes are read through the sections map
             if filename != "_index.md":
                 pages[rel_path] = people
-            parts = rel_path.split("/")[:-1]
-            for depth in range(len(parts) + 1):
-                per_dir.setdefault("/".join(parts[:depth]), []).append(people)
-    # no root aggregate, the front page only lists devices
-    sections = {"/" + directory + "/": merge(groups) for directory, groups in per_dir.items() if directory}
+    sections = group_by_dir(files)
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as out:
         json.dump({"pages": pages, "sections": sections}, out, indent=1, ensure_ascii=False)
