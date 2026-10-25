@@ -1,5 +1,5 @@
 base_url = "https://devices.flac.moe"
-title = "Android device guides"
+title = "ADGA"
 description = "Guides for Android devices."
 generate_feeds = true
 feed_filenames = ["rss.xml"]

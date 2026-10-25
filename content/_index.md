@@ -1,4 +1,4 @@
 +++
-title = "Android device guides"
+title = "ADGA"
 description = "Guides for Android devices."
 +++
