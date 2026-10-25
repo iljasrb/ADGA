@@ -8,7 +8,7 @@
 <link rel="canonical" href="{{ config.extra.canonical_url }}{{ path }}">
 <title>{% block title %}{{ config.title }}{% endblock %}</title>
 <link rel="alternate" type="application/rss+xml" title="{{ config.title }}" href="{{ get_url(path='rss.xml') }}">
-<link rel="icon" href="{{ get_url(path='favicon.svg') }}" type="image/svg+xml">
+<link rel="icon" href="{{ get_url(path='logo.svg') }}" type="image/svg+xml">
 <link rel="stylesheet" href="{{ get_url(path='style.css') }}">
 </head>
 <body>
@@ -17,7 +17,10 @@
 
 <header>
     <div class="bar">
-        <a class="brand" href="{{ config.base_url }}/">devices.flac.moe</a>
+        <a class="brand" href="{{ config.base_url }}/">
+            <img src="{{ get_url(path='logo.svg') }}" alt="" width="26" height="19">
+            devices.flac.moe
+        </a>
         <nav class="site" aria-label="Site">
             <a href="{{ config.base_url }}/about/"{% if path | split(pat="/") | nth(n=1) == "about" %} aria-current="page"{% endif %}>About</a>
         </nav>

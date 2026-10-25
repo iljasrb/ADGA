@@ -29,7 +29,8 @@ img { max-width: 100%; height: auto; }
 
 header { padding: 1.25rem 0; border-bottom: 1px solid var(--line); }
 .bar { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-.brand { font-size: 1.05rem; font-weight: 700; color: var(--fg); text-decoration: none; }
+.brand { display: inline-flex; align-items: center; gap: .5rem; font-size: 1.05rem; font-weight: 700; color: var(--fg); text-decoration: none; }
+.brand img { display: block; height: 19px; width: auto; }
 .brand:hover { color: var(--link); }
 nav.site { display: flex; align-items: center; gap: 1.25rem; }
 nav.site a { color: var(--muted); text-decoration: none; }
