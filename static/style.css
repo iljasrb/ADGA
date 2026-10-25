@@ -112,6 +112,9 @@ nav.side a.ext { margin-top: .75rem; border-top: 1px solid var(--line); color: v
 .prose .markdown-alert-warning::before { content: "Warning"; color: var(--warn); }
 .prose .markdown-alert-caution { border-left-color: var(--err); background: light-dark(#fff5f5, #2a1416); }
 .prose .markdown-alert-caution::before { content: "Caution"; color: var(--err); }
+.prose img { display: block; margin: 1rem auto; }
+.prose figure { margin: 1rem 0; }
+.prose figcaption { margin-top: .4rem; color: var(--muted); font-size: .85rem; text-align: center; }
 .prose table { border-collapse: collapse; min-width: 50%; }
 .prose th, .prose td { padding: .4rem .6rem; border: 1px solid var(--line); text-align: left; }
 .prose thead { background: var(--tile); }
