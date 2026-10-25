@@ -2,3 +2,4 @@
 /data/contributors.json
 /.zola/
 .DS_Store
+__pycache__/
