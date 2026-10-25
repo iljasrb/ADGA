@@ -80,10 +80,12 @@ def merge(groups):
 
 def commits_for(rel_path, mapping):
     raw = subprocess.run(
-        ["git", "log", "--use-mailmap", "--format=%aN%x1f%aE%x1f%B%x1e", "--", "content/" + rel_path],
+        ["git", "log", "--use-mailmap", "--follow", "--format=%aN%x1f%aE%x1f%B%x1e", "--", "content/" + rel_path],
         cwd=ROOT,
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         check=True,
     ).stdout
     return parse_log(raw, mapping)
@@ -94,7 +96,7 @@ def build():
     pages = {}
     per_dir = {}
     for dirpath, _, filenames in os.walk(CONTENT):
-        for filename in filenames:
+        for filename in sorted(filenames):
             if not filename.endswith(".md"):
                 continue
             rel_path = os.path.relpath(os.path.join(dirpath, filename), CONTENT).replace(os.sep, "/")

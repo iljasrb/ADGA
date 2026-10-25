@@ -6,8 +6,12 @@ cd "$(dirname "$0")"
 ZOLA_VERSION="${ZOLA_VERSION:-0.23.6}"
 
 # attribution needs the full history
-if [ -d .git ] && [ -f .git/shallow ]; then
+if [ -d .git ] && [ "$(git rev-parse --is-shallow-repository)" = true ]; then
 	git fetch --unshallow --quiet || true
+fi
+if [ -d .git ] && [ "$(git rev-parse --is-shallow-repository)" = true ]; then
+	echo "build.sh: shallow clone, contributor history would be incomplete" >&2
+	exit 1
 fi
 
 python3 contributors.py
