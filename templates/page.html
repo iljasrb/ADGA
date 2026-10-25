@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% import "macros.html" as macros %}
+
+{% block title %}{{ page.title }} · {{ config.title }}{% endblock %}
+
+{% block body %}
+{% set contributors = load_data(path="data/contributors.json") %}
+{% set device = get_section(path=page.ancestors | last) %}
+<div class="layout">
+    <aside>{{ macros::device_nav(sec=device, path=current_path, flasher=config.extra.flasher_url) }}</aside>
+    <article class="content">
+        <h1>{{ page.title }}</h1>
+        {% if page.description %}<p class="meta">{{ page.description }}</p>{% endif %}
+
+        <p class="verified">
+            {% if page.extra.verified_by %}
+            Hand-verified by <a href="https://github.com/{{ page.extra.verified_by }}">@{{ page.extra.verified_by }}</a> on <time datetime="{{ page.extra.verified_on }}">{{ page.extra.verified_on }}</time>
+            {% else %}
+            <strong>Not yet hand-verified.</strong>
+            {% endif %}
+            {% if page.updated %}· last updated <time datetime="{{ page.updated }}">{{ page.updated | date(format="%d %b %Y") }}</time>{% endif %}
+        </p>
+
+        {% if page.extra.risk %}<p class="callout warn">{{ page.extra.risk }}</p>{% endif %}
+
+        {% if page.extra.show_toc | default(value=true) and page.toc | length > 2 %}
+        <details class="toc">
+            <summary>Contents</summary>
+            <ul>
+                {% for h1 in page.toc %}
+                <li>
+                    <a href="{{ h1.permalink | safe }}">{{ h1.title }}</a>
+                    {% if h1.children %}
+                    <ul>
+                        {% for h2 in h1.children %}
+                        <li><a href="{{ h2.permalink | safe }}">{{ h2.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </details>
+        {% endif %}
+
+        <div class="prose">{{ page.content | safe }}</div>
+
+        {{ macros::contributors(people=contributors.pages[page.relative_path]) }}
+    </article>
+</div>
+{% endblock %}

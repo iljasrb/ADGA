@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}{{ config.title }}{% endblock %}
+
+{% block body %}
+<h1>{{ config.title }}</h1>
+<div class="prose intro">{{ section.content | safe }}</div>
+
+<ul class="devices">
+    {% for sub in section.subsections %}
+    {% set device = get_section(path=sub) %}
+    <li class="device">
+        <a class="name" href="{{ device.permalink }}">{{ device.title }}</a>
+        {% if device.description %}<span class="meta">{{ device.description }}</span>{% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,24 @@
+#!/bin/sh
+# Build the site. On Cloudflare Pages: build command ./build.sh, output directory public.
+set -eu
+cd "$(dirname "$0")"
+
+ZOLA_VERSION="${ZOLA_VERSION:-0.23.6}"
+
+# Contributors come from git history, so a shallow clone has to be deepened first.
+if [ -d .git ] && [ -f .git/shallow ]; then
+	git fetch --unshallow --quiet || true
+fi
+
+python3 contributors.py
+
+if ! command -v zola >/dev/null 2>&1; then
+	mkdir -p .zola
+	if [ ! -x .zola/zola ]; then
+		curl -fsSL "https://github.com/getzola/zola/releases/download/v$ZOLA_VERSION/zola-v$ZOLA_VERSION-x86_64-unknown-linux-gnu.tar.gz" |
+			tar -xz -C .zola
+	fi
+	PATH="$PWD/.zola:$PATH"
+fi
+
+exec zola build "$@"

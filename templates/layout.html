@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="{% block description %}{% if page and page.description %}{{ page.description }}{% elif section and section.description %}{{ section.description }}{% else %}{{ config.description }}{% endif %}{% endblock %}">
+<link rel="canonical" href="{{ config.base_url }}{{ current_path }}">
+<title>{% block title %}{{ config.title }}{% endblock %}</title>
+<link rel="alternate" type="application/rss+xml" title="{{ config.title }}" href="{{ get_url(path='rss.xml') }}">
+<link rel="stylesheet" href="{{ get_url(path='style.css') }}">
+</head>
+<body>
+<a class="skip-link" href="#content">Skip to content</a>
+<div class="wrapper">
+
+<header>
+    <div class="bar">
+        <a class="brand" href="{{ config.base_url }}/">devices.flac.moe</a>
+        <nav class="site" aria-label="Site">
+            <a href="{{ config.base_url }}/bronco/"{% if current_path is starting_with("/bronco/") %} aria-current="page"{% endif %}>ThinkPhone</a>
+            <a href="{{ config.extra.flasher_url }}" rel="noopener">Flasher</a>
+            <a href="{{ config.extra.repo_url }}" rel="noopener">GitHub</a>
+        </nav>
+        <div class="search-container">
+            <label for="search" class="visually-hidden">Search</label>
+            <input id="search" type="search" autocomplete="off" placeholder="Search" aria-controls="search-results" aria-expanded="false" aria-describedby="search-help">
+            <p id="search-help" class="visually-hidden">Enter at least three characters to search.</p>
+            <div id="search-results" class="search-results" aria-label="Search results" aria-live="polite" hidden>
+                <ul class="search-results__items"></ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="content">
+{% block body %}{% endblock %}
+</main>
+
+<footer>
+    <p>Every guide is written by hand and verified on hardware.
+        <a href="{{ config.extra.repo_url }}/blob/main/CONTRIBUTING.md">Contributing</a> ·
+        <a href="{{ config.extra.repo_url }}">Source</a> ·
+        <a href="{{ get_url(path='rss.xml') }}">RSS</a></p>
+    <p>Content <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener">CC BY-SA 4.0</a>, site code MIT · built with <a href="https://www.getzola.org/" rel="noopener">Zola</a>.</p>
+</footer>
+
+</div>
+<script src="{{ get_url(path='search.js') }}" defer></script>
+<script src="{{ get_url(path='copy-code.js') }}" defer></script>
+</body>
+</html>

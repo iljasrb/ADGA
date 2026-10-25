@@ -1,0 +1,5 @@
+# Commit email -> GitHub login, for emails that are not GitHub noreply addresses.
+# Format: email = login
+# Unknown emails still get credited, with an initial instead of a profile link.
+
+iljasrb@noreply.codeberg.org = iljasrb
