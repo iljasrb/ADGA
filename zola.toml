@@ -1,6 +1,6 @@
 base_url = "https://devices.flac.moe"
 title = "ADGA"
-description = "Guides for Android devices."
+description = "Archive of Android device modification instructions: custom ROMs, bootloader unlock, EDL flash, kernels."
 generate_feeds = true
 feed_filenames = ["rss.xml"]
 build_search_index = true
