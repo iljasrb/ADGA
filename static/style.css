@@ -77,9 +77,11 @@ nav.side li::after { content: ""; position: absolute; left: 0; top: 50%; width: 
 .device .meta, .guides .meta { display: block; margin-top: .15rem; }
 
 .callout { padding: .6rem .75rem; background: var(--tile); border: 1px solid var(--line); border-left: 3px solid var(--link); font-size: .95rem; }
-.callout.warn { border-left-color: var(--err); }
+.callout.warn { border-left-color: var(--err); background: light-dark(#fff5f5, #2a1416); }
+.callout + .callout { margin-top: 1.5rem; }
 
-.verified { color: var(--muted); font-size: .9rem; }
+.callout.verified { border-left-color: var(--ok); color: var(--muted); font-size: .9rem; }
+.callout.verified.unverified { border-left-color: var(--warn); }
 
 /* prose */
 .prose > :last-child { margin-bottom: 0; }
