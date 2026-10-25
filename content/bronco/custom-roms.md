@@ -1,6 +1,6 @@
 +++
 title = "Custom ROMs"
 description = "Installing a custom ROM on the ThinkPhone."
-weight = 5
+weight = 1
 draft = true
 +++
