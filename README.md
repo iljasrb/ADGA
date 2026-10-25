@@ -19,22 +19,6 @@ python3 test_contributors.py
 node test_search.mjs
 ```
 
-## Hosting
-
-Cloudflare Workers with static assets, two Workers from this repository, both built with
-`./build.sh`:
-
-| Worker | URL | Deploy command | Environment |
-|---|---|---|---|
-| `adga` | `https://devices.flac.moe` (custom domain) | `npx wrangler deploy` | — |
-| `adga-mirror` | `https://adga-mirror.<account>.workers.dev` | `npx wrangler deploy --name adga-mirror` | `BASE_URL=https://adga-mirror.<account>.workers.dev` |
-
-`wrangler.jsonc` uploads `public/` and serves `404.html` for unknown paths. Both Workers build on
-every push, so the mirror is a working copy: its own links, search index and feed.
-`<link rel="canonical">` always points at `devices.flac.moe` (`[extra] canonical_url` in
-`zola.toml`), so only the primary gets indexed. Set `DRAFTS=1` on the preview environment so a pull
-request shows the draft pages it adds.
-
 ## Adding a device
 
 1. `content/<codename>/_index.md` with `title`, `description`, `sort_by = "weight"` and
