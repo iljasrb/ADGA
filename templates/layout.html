@@ -18,7 +18,7 @@
     <div class="bar">
         <a class="brand" href="{{ config.base_url }}/">devices.flac.moe</a>
         <nav class="site" aria-label="Site">
-            <a href="{{ config.base_url }}/bronco/"{% if current_path is starting_with("/bronco/") %} aria-current="page"{% endif %}>ThinkPhone</a>
+            <a href="{{ config.base_url }}/bronco/"{% if current_path | split(pat="/") | nth(n=1) == "bronco" %} aria-current="page"{% endif %}>ThinkPhone</a>
             <a href="{{ config.extra.flasher_url }}" rel="noopener">Flasher</a>
             <a href="{{ config.extra.repo_url }}" rel="noopener">GitHub</a>
         </nav>

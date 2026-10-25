@@ -1,0 +1,7 @@
+<nav class="side" aria-label="{{ device.title }} guides">
+    <a href="{{ device.permalink }}"{% if current == device.path %} aria-current="page"{% endif %}>{{ device.title }}</a>
+    {% for page in device.pages %}
+    <a href="{{ page.permalink }}"{% if current == page.path %} aria-current="page"{% endif %}>{{ page.title }}</a>
+    {% endfor %}
+    <a class="ext" href="{{ flasher }}" rel="noopener">Web flasher ↗</a>
+</nav>

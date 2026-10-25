@@ -67,7 +67,7 @@ def parse_log(raw, mapping):
             seen[key] += 1
             names.setdefault(key, (login, person_name))
     return [
-        {"login": names[key][0], "name": names[key][1], "count": count}
+        {"login": names[key][0], "name": names[key][1], "initial": names[key][1][:1].upper(), "count": count}
         for key, count in sorted(seen.items(), key=lambda item: (-item[1], names[item[0]][1].lower()))
     ]
 
@@ -80,7 +80,7 @@ def merge(groups):
         if key in merged:
             merged[key]["count"] += person["count"]
         else:
-            merged[key] = dict(person)
+            merged[key] = {**person, "initial": person.get("initial") or person["name"][:1].upper()}
     return sorted(merged.values(), key=lambda person: (-person["count"], person["name"].lower()))
 
 

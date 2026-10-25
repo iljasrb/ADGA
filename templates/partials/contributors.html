@@ -1,0 +1,20 @@
+<section class="contrib">
+    <h2>Contributors</h2>
+    {% if people %}
+    <ul class="who">
+        {% for person in people %}
+        <li>
+            {% if person.login %}
+            <a href="https://github.com/{{ person.login }}" title="{{ person.name }}">
+                <img src="https://github.com/{{ person.login }}.png?size=64" alt="" width="24" height="24" loading="lazy" onerror="this.remove()">{{ person.login }}
+            </a>
+            {% else %}
+            <span title="{{ person.name }}"><span class="initial" aria-hidden="true">{{ person.initial }}</span>{{ person.name }}</span>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="meta">No commits to this page yet.</p>
+    {% endif %}
+</section>

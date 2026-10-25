@@ -1,12 +1,15 @@
 {% extends "layout.html" %}
-{% import "macros.html" as macros %}
 
 {% block title %}{{ section.title }} · {{ config.title }}{% endblock %}
 
 {% block body %}
 {% set contributors = load_data(path="data/contributors.json") %}
+{% set people = contributors.sections[section.path] %}
+{% set device = section %}
+{% set current = current_path %}
+{% set flasher = config.extra.flasher_url %}
 <div class="layout">
-    <aside>{{ macros::device_nav(sec=section, path=current_path, flasher=config.extra.flasher_url) }}</aside>
+    <aside>{% include "partials/device-nav.html" %}</aside>
     <div class="content">
         <h1>{{ section.title }}</h1>
         {% if section.description %}<p class="meta">{{ section.description }}</p>{% endif %}
@@ -23,7 +26,7 @@
         </ul>
         {% endif %}
 
-        {{ macros::contributors(people=contributors.sections[section.path]) }}
+        {% include "partials/contributors.html" %}
     </div>
 </div>
 {% endblock %}

@@ -26,9 +26,9 @@ people = parse_log(raw, {"ana@example.org": "ana"})
 assert [(person["login"], person["count"]) for person in people] == [("ana", 2), ("iljasrb", 1)], people
 
 unnamed = parse_log(f"Bob{FIELD}bob@example.org{FIELD}alone{SEP}", {})
-assert unnamed == [{"login": None, "name": "Bob", "count": 1}], unnamed
+assert unnamed == [{"login": None, "name": "Bob", "initial": "B", "count": 1}], unnamed
 
 merged = merge([[{"login": "ana", "name": "Ana", "count": 1}], [{"login": "ana", "name": "Ana", "count": 2}]])
-assert merged == [{"login": "ana", "name": "Ana", "count": 3}], merged
+assert merged == [{"login": "ana", "name": "Ana", "initial": "A", "count": 3}], merged
 
 print("ok")

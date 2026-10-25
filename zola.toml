@@ -8,6 +8,9 @@ generate_feeds = true
 feed_filenames = ["rss.xml"]
 build_search_index = true
 
+[search]
+index_format = "fuse_json"
+
 [markdown]
 smart_punctuation = true
 bottom_footnotes = true

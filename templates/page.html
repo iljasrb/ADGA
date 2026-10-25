@@ -1,27 +1,31 @@
 {% extends "layout.html" %}
-{% import "macros.html" as macros %}
 
 {% block title %}{{ page.title }} · {{ config.title }}{% endblock %}
 
 {% block body %}
 {% set contributors = load_data(path="data/contributors.json") %}
+{% set people = contributors.pages[page.relative_path] %}
 {% set device = get_section(path=page.ancestors | last) %}
+{% set current = current_path %}
+{% set flasher = config.extra.flasher_url %}
+{% set verified_by = page.extra | get(key="verified_by", default="") %}
+{% set risk = page.extra | get(key="risk", default="") %}
 <div class="layout">
-    <aside>{{ macros::device_nav(sec=device, path=current_path, flasher=config.extra.flasher_url) }}</aside>
+    <aside>{% include "partials/device-nav.html" %}</aside>
     <article class="content">
         <h1>{{ page.title }}</h1>
         {% if page.description %}<p class="meta">{{ page.description }}</p>{% endif %}
 
         <p class="verified">
-            {% if page.extra.verified_by %}
-            Hand-verified by <a href="https://github.com/{{ page.extra.verified_by }}">@{{ page.extra.verified_by }}</a> on <time datetime="{{ page.extra.verified_on }}">{{ page.extra.verified_on }}</time>
+            {% if verified_by %}
+            Hand-verified by <a href="https://github.com/{{ verified_by }}">@{{ verified_by }}</a> on <time datetime="{{ page.extra.verified_on }}">{{ page.extra.verified_on }}</time>
             {% else %}
             <strong>Not yet hand-verified.</strong>
             {% endif %}
             {% if page.updated %}· last updated <time datetime="{{ page.updated }}">{{ page.updated | date(format="%d %b %Y") }}</time>{% endif %}
         </p>
 
-        {% if page.extra.risk %}<p class="callout warn">{{ page.extra.risk }}</p>{% endif %}
+        {% if risk %}<p class="callout warn">{{ risk }}</p>{% endif %}
 
         {% if page.extra.show_toc | default(value=true) and page.toc | length > 2 %}
         <details class="toc">
@@ -45,7 +49,7 @@
 
         <div class="prose">{{ page.content | safe }}</div>
 
-        {{ macros::contributors(people=contributors.pages[page.relative_path]) }}
+        {% include "partials/contributors.html" %}
     </article>
 </div>
 {% endblock %}
