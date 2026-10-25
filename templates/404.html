@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block title %}404 · {{ config.title }}{% endblock %}
+
+{% block body %}
+<article class="content narrow">
+    <h1>404</h1>
+    <p class="meta">No page at this address.</p>
+    <p><a href="{{ config.base_url }}/">Devices</a> · <a href="{{ config.base_url }}/about/">About</a></p>
+</article>
+{% endblock %}

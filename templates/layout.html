@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+{% set path = current_path | default(value="/") %}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="{% if page and page.description %}{{ page.description }}{% elif section and section.description %}{{ section.description }}{% else %}{{ config.description }}{% endif %}">
-<link rel="canonical" href="{{ config.extra.canonical_url }}{{ current_path }}">
+<link rel="canonical" href="{{ config.extra.canonical_url }}{{ path }}">
 <title>{% block title %}{{ config.title }}{% endblock %}</title>
 <link rel="alternate" type="application/rss+xml" title="{{ config.title }}" href="{{ get_url(path='rss.xml') }}">
+<link rel="icon" href="{{ get_url(path='favicon.svg') }}" type="image/svg+xml">
 <link rel="stylesheet" href="{{ get_url(path='style.css') }}">
 </head>
 <body>
@@ -17,7 +19,7 @@
     <div class="bar">
         <a class="brand" href="{{ config.base_url }}/">devices.flac.moe</a>
         <nav class="site" aria-label="Site">
-            <a href="{{ config.base_url }}/about/"{% if current_path | split(pat="/") | nth(n=1) == "about" %} aria-current="page"{% endif %}>About</a>
+            <a href="{{ config.base_url }}/about/"{% if path | split(pat="/") | nth(n=1) == "about" %} aria-current="page"{% endif %}>About</a>
         </nav>
         <div class="actions">
             <button class="search-open" id="search-open" type="button" aria-haspopup="dialog" aria-keyshortcuts="Control+K">

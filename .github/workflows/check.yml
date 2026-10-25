@@ -1,0 +1,27 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Zola
+        run: |
+          version=0.23.6
+          curl -fsSL "https://github.com/getzola/zola/releases/download/v$version/zola-v$version-x86_64-unknown-linux-gnu.tar.gz" | sudo tar -xz -C /usr/local/bin
+      - run: python3 test_contributors.py
+      - run: node test_search.mjs
+      - name: Build and check links
+        run: |
+          ./build.sh --drafts
+          zola check --drafts --skip-external-links

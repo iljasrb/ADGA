@@ -31,14 +31,14 @@ directory `public`:
 
 Both deploy on every push, so the mirror is a working copy: its own links, search index and feed.
 `<link rel="canonical">` always points at `devices.flac.moe` (`[extra] canonical_url` in `zola.toml`),
-so only the primary gets indexed. No CI workflow; preview deployments check a pull request.
+so only the primary gets indexed. Set `DRAFTS=1` on the preview environment so a pull request shows
+the draft pages it adds.
 
 ## Adding a device
 
-1. `content/<codename>/_index.md` with `title`, `description`, `sort_by = "weight"`.
+1. `content/<codename>/_index.md` with `title`, `description`, `sort_by = "weight"` and
+   `[extra] device = true` — without it the section is not listed as a device and gets no sidebar.
 2. `content/<codename>/<page>.md` per guide, `draft = true` until verified.
-
-Flasher and repository links are `[extra]` in `zola.toml`.
 
 ## Page frontmatter
 
@@ -64,3 +64,13 @@ a warning box, `show_toc = false` hides the contents list.
 Generated from `git log`, per page and per device. Logins come from GitHub noreply emails or
 `contributors.map` (`email = login`); `Co-authored-by:` trailers count; bots are skipped; unknown
 emails get a name and initial without a link. Do not edit `data/contributors.json`.
+
+## Checks
+
+`.github/workflows/check.yml` runs on every push and pull request:
+`python3 test_contributors.py`, `node test_search.mjs`, `./build.sh --drafts` and
+`zola check --drafts --skip-external-links`.
+
+## License
+
+Code and templates MIT (`LICENSE`). Guide content and images CC BY-SA 4.0 (`LICENSE-content`).
