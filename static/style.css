@@ -31,6 +31,9 @@ header { padding: 1.25rem 0; border-bottom: 1px solid var(--line); }
 .bar { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
 .brand { font-size: 1.05rem; font-weight: 700; color: var(--fg); text-decoration: none; }
 .brand:hover { color: var(--link); }
+nav.site { display: flex; align-items: center; gap: 1.25rem; }
+nav.site a { color: var(--muted); text-decoration: none; }
+nav.site a:hover, nav.site a[aria-current="page"] { color: var(--fg); text-decoration: underline; text-underline-offset: .3em; }
 .actions { display: flex; align-items: center; gap: .5rem; margin-left: auto; }
 a.icon {
 	display: inline-flex; align-items: center; justify-content: center;

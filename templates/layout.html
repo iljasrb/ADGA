@@ -16,6 +16,9 @@
 <header>
     <div class="bar">
         <a class="brand" href="{{ config.base_url }}/">devices.flac.moe</a>
+        <nav class="site" aria-label="Site">
+            <a href="{{ config.base_url }}/about/"{% if current_path | split(pat="/") | nth(n=1) == "about" %} aria-current="page"{% endif %}>About</a>
+        </nav>
         <div class="actions">
             <button class="search-open" id="search-open" type="button" aria-haspopup="dialog" aria-keyshortcuts="Control+K">
                 <span>Search</span><kbd id="search-key">Ctrl K</kbd>
