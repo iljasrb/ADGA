@@ -8,6 +8,12 @@
     <p class="sub">Android Device Guide Archive</p>
     <p>{{ config.description }}</p>
     <p>Consider supporting this project <a href="{{ config.extra.repo_url }}/blob/main/CONTRIBUTING.md">by contributing</a>.</p>
+    {% set mirrors = section.extra | get(key="mirrors", default=[]) %}
+    {% if mirrors %}
+    <p class="mirrors">Mirrors:
+        {% for host in mirrors %}<a href="https://{{ host }}">{{ host }}</a>{% if not loop.last %} · {% endif %}{% endfor %}
+    </p>
+    {% endif %}
 </section>
 
 <hr>
