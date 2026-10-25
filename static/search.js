@@ -1,257 +1,180 @@
-// search.js – modern, lightweight client-side search for Zola
-(() => {
-  "use strict";
+// Search palette over Zola's page index. The index is fetched on first open, not on every page.
+// Ranking and snippets live in search-core.mjs so they can be checked with node.
+import { deviceOf, hrefOf, search, snippet } from "./search-core.mjs";
 
-  // ---------- Configuration -----------------------------------------------
-  const CONFIG = {
-    indexURL: "/search_index.en.json",
-    inputSelector: "#search",
-    resultsContainerSelector: ".search-results__items",
-    resultsWrapperSelector: ".search-results",
-    debounceDelay: 200, // ms
-    minQueryLength: 3, // require at least 3 characters
-    teaserContext: 30,
-  };
+const INDEX_URL = "/search_index.en.json";
+const MAX_RESULTS = 12;
 
-  // ---------- Utility helpers ---------------------------------------------
-  const escapeHtml = (text) => {
-    if (!text) return "";
-    const map = {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;",
-    };
-    return text.replace(/[&<>"']/g, (m) => map[m]);
-  };
+const dialog = document.getElementById("search-dialog");
+const input = document.getElementById("search-input");
+const list = document.getElementById("search-results");
+const status = document.getElementById("search-status");
+const hint = document.getElementById("search-hint");
+const trigger = document.getElementById("search-open");
+const closeButton = document.getElementById("search-close");
+const keyHint = document.getElementById("search-key");
 
-  const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+if (dialog && input && list) {
+  let index = null;
+  let hits = [];
+  let query = "";
 
-  const debounce = (fn, delay) => {
-    let timer;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => fn(...args), delay);
-    };
-  };
+  const isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+  if (keyHint) keyHint.textContent = isMac ? "⌘ K" : "Ctrl K";
 
-  // ---------- Main Search class -------------------------------------------
-  class Search {
-    constructor(config) {
-      this.config = config;
-      this.indexData = [];
+  const load = () =>
+    (index ??= fetch(INDEX_URL)
+      .then((response) => (response.ok ? response.json() : []))
+      .catch(() => []));
 
-      // DOM refs
-      this.input = document.querySelector(config.inputSelector);
-      this.resultsContainer = document.querySelector(
-        config.resultsContainerSelector,
-      );
-      this.resultsWrapper = document.querySelector(
-        config.resultsWrapperSelector,
-      );
-
-      if (!this.input || !this.resultsContainer || !this.resultsWrapper) {
-        console.warn("Search: required DOM elements not found.");
+  // Append text, wrapping every case-insensitive match of q in <mark>. Text nodes only, no HTML.
+  function markInto(node, text, q) {
+    const lower = text.toLowerCase();
+    let from = 0;
+    for (;;) {
+      const at = q ? lower.indexOf(q, from) : -1;
+      if (at < 0) {
+        node.append(text.slice(from));
         return;
       }
-
-      this.bindEvents();
-      this.loadIndex();
-    }
-
-    // ---------- Load index ------------------------------------------------
-    async loadIndex() {
-      try {
-        const response = await fetch(this.config.indexURL);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        this.indexData = await response.json();
-
-        // If there's an initial query (e.g., from URL param), run it
-        if (this.input.value.trim() !== "") {
-          this.performSearch(this.input.value);
-        } else {
-          this.hideResults();
-        }
-      } catch (err) {
-        console.error("Search: failed to load index", err);
-        this.renderError("Failed to load search index.");
-      }
-    }
-
-    // ---------- Search logic (substring match) ----------------------------
-    performSearch(rawQuery) {
-      const query = rawQuery.trim();
-
-      // Hide results if query is too short or empty
-      if (query.length < this.config.minQueryLength) {
-        this.hideResults();
-        return;
-      }
-
-      if (!this.indexData.length) {
-        this.renderError("Search index not loaded.");
-        return;
-      }
-
-      const lowerQuery = query.toLowerCase();
-
-      // Filter items where title OR body contains the query (case‑insensitive)
-      const matches = this.indexData.filter((item) => {
-        const titleMatch =
-          item.title?.toLowerCase().includes(lowerQuery) ?? false;
-        const bodyMatch =
-          item.body?.toLowerCase().includes(lowerQuery) ?? false;
-        return titleMatch || bodyMatch;
-      });
-
-      // Prioritise title matches
-      matches.sort((a, b) => {
-        const aTitle = a.title?.toLowerCase().includes(lowerQuery) ?? false;
-        const bTitle = b.title?.toLowerCase().includes(lowerQuery) ?? false;
-        return aTitle === bTitle ? 0 : aTitle ? -1 : 1;
-      });
-
-      this.renderResults(matches, query);
-    }
-
-    // ---------- Rendering ------------------------------------------------
-    renderResults(items, query) {
-      if (!items || items.length === 0) {
-        this.resultsContainer.innerHTML =
-          '<li class="search-results__item">No results found</li>';
-        this.showResults();
-        return;
-      }
-
-      const html = items.map((item) => this.formatItem(item, query)).join("");
-      this.resultsContainer.innerHTML = html;
-      this.showResults();
-    }
-
-    renderError(message) {
-      this.resultsContainer.innerHTML = `<li class="search-results__item">${escapeHtml(message)}</li>`;
-      this.showResults();
-    }
-
-    formatItem(item, query) {
-      const highlightedTitle = this.highlightText(item.title, query);
-      const teaser = this.makeTeaser(item.body, query);
-
-      return `
-        <li class="search-results__item">
-          <a href="${escapeHtml(item.url)}">${highlightedTitle}</a>
-          <div>${teaser}</div>
-        </li>
-      `;
-    }
-
-    highlightText(text, query) {
-      if (!text || !query) return escapeHtml(text);
-      const regex = new RegExp(escapeRegex(query), "gi");
-      return escapeHtml(text).replace(
-        regex,
-        (match) => `<mark>${match}</mark>`,
-      );
-    }
-
-    makeTeaser(body, query) {
-      if (!body) return "";
-      if (!query) return escapeHtml(body).slice(0, 150) + "…";
-
-      const lowerBody = body.toLowerCase();
-      const lowerQuery = query.toLowerCase();
-      const index = lowerBody.indexOf(lowerQuery);
-
-      if (index === -1) {
-        return escapeHtml(body).slice(0, 150) + "…";
-      }
-
-      const ctx = this.config.teaserContext;
-      const start = Math.max(0, index - ctx);
-      const end = Math.min(body.length, index + query.length + ctx * 2);
-      let snippet = body.slice(start, end);
-
-      const parts = snippet.split(
-        new RegExp(`(${escapeRegex(query)})`, "gi"),
-      );
-      return parts
-        .map((part, index) =>
-          index % 2 === 1
-            ? `<mark>${escapeHtml(part)}</mark>`
-            : escapeHtml(part),
-        )
-        .join("");
-    }
-
-    // ---------- UI helpers ------------------------------------------------
-    showResults() {
-      this.resultsWrapper.hidden = false;
-      this.input.setAttribute("aria-expanded", "true");
-    }
-
-    hideResults() {
-      this.resultsWrapper.hidden = true;
-      this.input.setAttribute("aria-expanded", "false");
-      this.resultsContainer.innerHTML = "";
-    }
-
-    // ---------- Event binding ---------------------------------------------
-    bindEvents() {
-      const container = this.input.closest(".search-container");
-      const debouncedSearch = debounce(
-        (e) => this.performSearch(e.target.value),
-        this.config.debounceDelay,
-      );
-
-      this.input.addEventListener("input", debouncedSearch);
-
-      this.input.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          this.hideResults();
-        } else if (e.key === "ArrowDown" && !this.resultsWrapper.hidden) {
-          const firstResult = this.resultsContainer.querySelector("a");
-          if (firstResult) {
-            e.preventDefault();
-            firstResult.focus();
-          }
-        }
-      });
-
-      this.resultsContainer.addEventListener("keydown", (e) => {
-        const links = [...this.resultsContainer.querySelectorAll("a")];
-        const index = links.indexOf(document.activeElement);
-
-        if (e.key === "Escape") {
-          e.preventDefault();
-          this.hideResults();
-          this.input.focus();
-        } else if (e.key === "ArrowDown" && links[index + 1]) {
-          e.preventDefault();
-          links[index + 1].focus();
-        } else if (e.key === "ArrowUp") {
-          e.preventDefault();
-          if (index > 0) links[index - 1].focus();
-          else this.input.focus();
-        }
-      });
-
-      container?.addEventListener("focusout", () => {
-        setTimeout(() => {
-          if (!container.contains(document.activeElement)) this.hideResults();
-        });
-      });
-
-      document.addEventListener("click", (e) => {
-        if (container && !container.contains(e.target)) this.hideResults();
-      });
+      if (at > from) node.append(text.slice(from, at));
+      const mark = document.createElement("mark");
+      mark.textContent = text.slice(at, at + q.length);
+      node.append(mark);
+      from = at + q.length;
     }
   }
 
-  // ---------- Initialise when DOM is ready --------------------------------
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => new Search(CONFIG));
-  } else {
-    new Search(CONFIG);
+  function empty(message) {
+    const item = document.createElement("li");
+    item.className = "search-empty";
+    item.textContent = message;
+    list.replaceChildren(item);
   }
-})();
+
+  function render() {
+    const q = query.trim().toLowerCase();
+    if (!q) {
+      list.replaceChildren();
+      status.textContent = "";
+      hint.textContent = "Type to search · ↑↓ move · ↵ open · esc close";
+      return;
+    }
+    if (!index) {
+      empty("Loading index…");
+      return;
+    }
+
+    hits = search(index, q, MAX_RESULTS);
+    list.replaceChildren();
+    hint.textContent = `${hits.length} ${hits.length === 1 ? "result" : "results"} · ↑↓ move · ↵ open · esc close`;
+    status.textContent = `${hits.length} results for ${query.trim()}`;
+
+    if (!hits.length) {
+      empty(`No guide matches “${query.trim()}”.`);
+      return;
+    }
+
+    for (const hit of hits) {
+      const link = document.createElement("a");
+      link.href = hrefOf(hit.item.url, location.href);
+
+      const device = deviceOf(hit.item.url);
+      if (device) {
+        const crumb = document.createElement("span");
+        crumb.className = "crumb";
+        crumb.textContent = device;
+        link.append(crumb);
+      }
+
+      const title = document.createElement("span");
+      title.className = "title";
+      markInto(title, hit.item.title, q);
+      link.append(title);
+
+      const body = snippet(hit.item.body, q, hit.matchedBody);
+      if (body) {
+        const line = document.createElement("span");
+        line.className = "snippet";
+        markInto(line, body, q);
+        link.append(line);
+      }
+
+      link.addEventListener("click", () => dialog.close());
+      const item = document.createElement("li");
+      item.append(link);
+      list.append(item);
+    }
+  }
+
+  function open(initial = "") {
+    if (!dialog.open) dialog.showModal();
+    input.value = initial;
+    query = initial;
+    hits = [];
+    render();
+    input.focus();
+    input.select();
+    load().then((items) => {
+      index = items;
+      if (query.trim()) render();
+    });
+  }
+
+  trigger?.addEventListener("click", () => open());
+  closeButton?.addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) dialog.close(); // click on the backdrop
+  });
+
+  // drop ?q= on close, so closing the palette does not reopen it on reload
+  dialog.addEventListener("close", () => {
+    const url = new URL(location.href);
+    if (url.searchParams.has("q")) {
+      url.searchParams.delete("q");
+      history.replaceState(null, "", url.pathname + url.search + url.hash);
+    }
+  });
+
+  input.addEventListener("input", () => {
+    query = input.value;
+    render();
+  });
+
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown" && hits.length) {
+      event.preventDefault();
+      list.querySelector("a")?.focus();
+    } else if (event.key === "Enter" && hits.length) {
+      event.preventDefault();
+      list.querySelector("a").click();
+    }
+  });
+
+  list.addEventListener("keydown", (event) => {
+    const links = [...list.querySelectorAll("a")];
+    const at = links.indexOf(document.activeElement);
+    if (event.key === "ArrowDown" && links[at + 1]) {
+      event.preventDefault();
+      links[at + 1].focus();
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      (at > 0 ? links[at - 1] : input).focus();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(event.target.tagName) || event.target.isContentEditable;
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+      event.preventDefault();
+      open();
+    } else if (event.key === "/" && !typing && !dialog.open) {
+      event.preventDefault();
+      open();
+    }
+  });
+
+  // ?q=... opens the palette with a query, so a search is a link someone can send.
+  const initial = new URLSearchParams(location.search).get("q");
+  if (initial) open(initial);
+}

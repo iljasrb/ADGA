@@ -24,6 +24,7 @@ test_contributors.py           self-check for the attribution logic
 ./build.sh --drafts        # drafts visible, output in public/
 python3 contributors.py && zola serve --drafts
 python3 test_contributors.py
+node test_search.mjs
 ```
 
 `data/contributors.json` is generated and git-ignored; the site cannot build without it, which is
@@ -42,6 +43,14 @@ Cloudflare Pages, connected to this repository:
 `build.sh` downloads Zola (v0.23.6 unless `ZOLA_VERSION` is set) when the build image has none,
 and deepens a shallow clone because attribution needs the full history. Preview deployments and
 build logs are the check for a pull request; there is no separate CI workflow.
+
+## Search
+
+`static/search.js` is the palette (open with the header button, `/`, or Ctrl/⌘ K; `?q=term` opens it
+with a query). `static/search-core.mjs` holds ranking and snippets with no DOM, so it can be tested
+with node. The index is Zola's `search_index.en.json`, fetched on first open, and result links are
+rewritten to the current host — the palette works the same on localhost, a preview deployment, and
+production.
 
 ## Adding a device
 

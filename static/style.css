@@ -145,30 +145,46 @@ footer p { margin: 0 0 .3rem; }
 .skip-link { position: absolute; left: -9999px; top: 0; z-index: 200; padding: .5rem 1rem; background: var(--bg); border: 1px solid var(--line); }
 .skip-link:focus { left: .5rem; top: .5rem; }
 
-/* search */
-.search-container { position: relative; margin-left: auto; }
-.search-container input { width: 12rem; padding: .3rem .5rem; background: var(--bg); border: 1px solid var(--edge); color: var(--fg); }
-.search-container input:focus { border-color: var(--link); outline: 2px solid var(--link); outline-offset: 2px; }
-.search-results {
-	position: absolute; right: 0; z-index: 100;
-	width: max(20rem, 150%); max-width: calc(100vw - 2rem); max-height: 30rem;
-	padding: 1rem; overflow: auto;
-	background: var(--bg); border: 1px solid var(--line); box-shadow: 0 2px 8px rgb(0 0 0 / 20%);
+/* search: a button in the bar, a palette over the page */
+.search-open {
+	display: flex; align-items: center; gap: .6rem;
+	margin-left: auto; padding: .3rem .5rem .3rem .7rem;
+	background: var(--bg); border: 1px solid var(--edge);
+	color: var(--muted); font-size: .9rem; cursor: pointer;
 }
-.search-results__items { list-style: none; margin: 0; padding: 0; }
-.search-results li { margin: 0 0 .75rem; padding-bottom: .75rem; border-bottom: 1px solid var(--line); font-size: .9rem; }
-.search-results li:last-child { border-bottom: 0; }
-.search-results__item a { font-size: 1.05rem; }
+.search-open:hover { border-color: var(--fg); color: var(--fg); }
+.search-open kbd { padding: 0 .3rem; border: 1px solid var(--line); font: .72rem var(--mono); color: var(--muted); }
+
+dialog.search-dialog {
+	display: flex; flex-direction: column;
+	width: min(44rem, calc(100vw - 2rem)); max-height: min(38rem, calc(100vh - 4rem));
+	margin: 8vh auto auto; padding: 0;
+	background: var(--bg); border: 1px solid var(--edge); color: var(--fg);
+}
+dialog.search-dialog:not([open]) { display: none; }
+dialog.search-dialog::backdrop { background: rgb(0 0 0 / 60%); }
+.search-head { display: flex; gap: .5rem; padding: .6rem; border-bottom: 1px solid var(--line); }
+.search-head input { flex: 1; min-width: 0; height: 2.25rem; padding: .3rem .5rem; background: var(--bg); border: 1px solid var(--edge); color: var(--fg); font-size: 1rem; }
+.search-head input:focus { border-color: var(--link); outline: 2px solid var(--link); outline-offset: 1px; }
+.search-close { flex: none; width: 2.25rem; background: var(--bg); border: 1px solid var(--line); color: var(--muted); font-size: 1rem; cursor: pointer; }
+.search-close:hover { border-color: var(--fg); color: var(--fg); }
+
+.search-results { flex: 1; margin: 0; padding: .35rem; overflow-y: auto; list-style: none; }
+.search-results a { display: block; padding: .45rem .6rem; border-left: 2px solid transparent; color: var(--fg); text-decoration: none; }
+.search-results a:hover, .search-results a:focus-visible { background: var(--tile); border-left-color: var(--link); outline: none; }
+.search-results .crumb { display: block; color: var(--muted); font: .72rem var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+.search-results .title { display: block; font-weight: 600; }
+.search-results .snippet { display: block; color: var(--muted); font-size: .85rem; }
 .search-results mark { background: light-dark(#fff3bf, #5c4a00); color: inherit; }
+.search-empty { padding: .9rem .6rem; color: var(--muted); }
+.search-hint { margin: 0; padding: .45rem .7rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
 
 @media (max-width: 900px) {
 	.layout { grid-template-columns: 1fr; gap: 1.5rem; }
 	/* on one column the tree root would repeat the page title: shrink it to a label */
 	nav.side a.root { font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
 	nav.side ul { margin-top: 0; }
-	.search-container { width: 100%; margin-left: 0; }
-	.search-container input { width: 100%; }
-	.search-results { width: 100%; min-width: 0; position: static; margin-top: .5rem; }
+	.search-open { width: 100%; justify-content: space-between; margin-left: 0; }
 }
 
 @media (max-width: 640px) {
