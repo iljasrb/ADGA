@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="{% if page and page.description %}{{ page.description }}{% elif section and section.description %}{{ section.description }}{% else %}{{ config.description }}{% endif %}">
-<link rel="canonical" href="{{ config.base_url }}{{ current_path }}">
+<link rel="canonical" href="{{ config.extra.canonical_url }}{{ current_path }}">
 <title>{% block title %}{{ config.title }}{% endblock %}</title>
 <link rel="alternate" type="application/rss+xml" title="{{ config.title }}" href="{{ get_url(path='rss.xml') }}">
 <link rel="stylesheet" href="{{ get_url(path='style.css') }}">

@@ -19,10 +19,19 @@ python3 test_contributors.py
 node test_search.mjs
 ```
 
-## Deploy
+## Hosting
 
-Cloudflare Pages: build command `./build.sh`, output directory `public`, domain
-`devices.flac.moe`. No CI workflow; the preview deployment checks a pull request.
+Cloudflare Pages, two projects from this repository, both with build command `./build.sh` and output
+directory `public`:
+
+| Project | URL | Environment |
+|---|---|---|
+| `devices` | `https://devices.flac.moe` (custom domain) | — |
+| `devices-mirror` | `https://devices-mirror.pages.dev` | `BASE_URL=https://devices-mirror.pages.dev` |
+
+Both deploy on every push, so the mirror is a working copy: its own links, search index and feed.
+`<link rel="canonical">` always points at `devices.flac.moe` (`[extra] canonical_url` in `zola.toml`),
+so only the primary gets indexed. No CI workflow; preview deployments check a pull request.
 
 ## Adding a device
 

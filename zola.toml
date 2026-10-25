@@ -18,4 +18,6 @@ light_theme = "github-light"
 dark_theme = "github-dark"
 
 [extra]
+# canonical points here even on the mirror build
+canonical_url = "https://devices.flac.moe"
 repo_url = "https://github.com/iljasrb/android-device-guide-archive"

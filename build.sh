@@ -25,4 +25,9 @@ if ! command -v zola >/dev/null 2>&1; then
 	PATH="$PWD/.zola:$PATH"
 fi
 
+# a mirror build passes its own origin, so its links and index stay on that host
+if [ -n "${BASE_URL:-}" ]; then
+	set -- --base-url "$BASE_URL" "$@"
+fi
+
 exec zola build "$@"
