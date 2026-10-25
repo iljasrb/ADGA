@@ -2,25 +2,23 @@
 {% block title %}{{ config.title }}{% endblock %}
 
 {% block body %}
-<div class="home">
-    <section class="hero">
-        <img src="{{ get_url(path='logo.svg') }}" alt="" width="132" height="96">
-        <h1>ADGA</h1>
-        <p>{{ config.description }}</p>
-    </section>
+<section class="hero">
+    <img src="{{ get_url(path='logo.svg') }}" alt="" width="132" height="96">
+    <h1>ADGA</h1>
+    <p>{{ config.description }}</p>
+</section>
 
-    <hr>
+<hr>
 
-    <ul class="devices">
-        {% for sub in section.subsections %}
-        {% set device = get_section(path=sub) %}
-        {% if device.extra | get(key="device", default=false) %}
-        <li class="device">
-            <a class="name" href="{{ device.permalink }}">{{ device.title }}</a>
-            {% if device.description %}<span class="meta">{{ device.description }}</span>{% endif %}
-        </li>
-        {% endif %}
-        {% endfor %}
-    </ul>
-</div>
+<ul class="devices">
+    {% for sub in section.subsections %}
+    {% set device = get_section(path=sub) %}
+    {% if device.extra | get(key="device", default=false) %}
+    <li class="device">
+        <a class="name" href="{{ device.permalink }}">{{ device.title }}</a>
+        {% if device.description %}<span class="meta">{{ device.description }}</span>{% endif %}
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
 {% endblock %}
