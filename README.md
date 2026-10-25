@@ -59,8 +59,7 @@ generated from `git log` at build time, so it cannot drift:
 - logins come from `…@users.noreply.github.com` commit emails, else from `contributors.map`;
 - `Co-authored-by:` trailers count;
 - bots are skipped;
-- emails that map to no login are credited by name with an initial, no profile link;
-- `.mailmap` normalizes names.
+- emails that map to no login are credited by name with an initial, no profile link.
 
 To credit a contributor who committed with a non-GitHub email, add one line to `contributors.map`.
 Do not edit `data/contributors.json` and do not add contributor lists to pages.
