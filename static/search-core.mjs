@@ -1,6 +1,6 @@
-// Pure search logic: no DOM, so it can be checked with node (test_search.mjs).
+// no DOM, tested by test_search.mjs
 
-/** Rank index entries for a query: title start, title, then body; shorter titles first. */
+/** title start, title, body; shorter titles first */
 export function search(items, query, max = 12) {
   const q = query.trim().toLowerCase();
   if (!q) return [];
@@ -22,7 +22,7 @@ export function search(items, query, max = 12) {
   return hits.slice(0, max);
 }
 
-/** The line that matched, with context. Body text is collapsed before cutting. */
+/** matched line with context, whitespace collapsed */
 export function snippet(body, query, matchedBody, width = 80) {
   const text = (body || "").replace(/\s+/g, " ").trim();
   if (!text) return "";
@@ -31,7 +31,7 @@ export function snippet(body, query, matchedBody, width = 80) {
   if (at < 0) return text.length > width * 2 ? text.slice(0, width * 2) + "…" : text;
   let start = Math.max(0, at - width);
   let end = Math.min(text.length, at + q.length + width);
-  // cut on spaces, so the snippet does not start or end mid-word
+  // cut on spaces, never mid-word
   const firstSpace = text.indexOf(" ", start);
   if (start > 0 && firstSpace >= 0 && firstSpace < at) start = firstSpace + 1;
   const lastSpace = text.lastIndexOf(" ", end);
@@ -39,13 +39,12 @@ export function snippet(body, query, matchedBody, width = 80) {
   return (start > 0 ? "…" : "") + text.slice(start, end) + (end < text.length ? "…" : "");
 }
 
-/** The same page on whatever host is serving it: the index stores absolute site URLs. */
+/** index stores absolute URLs, links are relative to the serving host */
 export function hrefOf(url, base) {
   const parsed = new URL(url, base);
   return parsed.pathname + parsed.search + parsed.hash;
 }
 
-/** First path segment of a page URL: the device codename. */
 export function deviceOf(url) {
   return decodeURIComponent(new URL(url).pathname.split("/").filter(Boolean)[0] || "");
 }

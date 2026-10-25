@@ -1,4 +1,4 @@
-/* Sourcehut palette from ougi-flasher, typography and layout from flac.moe. */
+/* sourcehut palette, flac.moe typography */
 :root {
 	color-scheme: light dark;
 	--bg: light-dark(#fff, #212529);
@@ -27,7 +27,6 @@ img { max-width: 100%; height: auto; }
 
 .wrapper { max-width: 71.25rem; margin: 0 auto; padding: 0 1rem; }
 
-/* header: brand, site links, search — one bar */
 header { padding: 1.25rem 0; border-bottom: 1px solid var(--line); }
 .bar { display: flex; align-items: center; gap: 1rem 1.5rem; flex-wrap: wrap; }
 .brand { font-size: 1.05rem; font-weight: 700; color: var(--fg); text-decoration: none; }
@@ -49,10 +48,8 @@ li > ul, li > ol { margin: .3rem 0 0; }
 hr { margin: 1.5rem 0; border: 0; border-top: 1px solid var(--line); }
 .meta { color: var(--muted); font-size: .9rem; }
 
-/* device page: menu on the left, the guide on the right */
 .layout { display: grid; grid-template-columns: minmax(13rem, 17rem) minmax(0, 1fr); gap: 2rem; align-items: start; }
 .layout > * { min-width: 0; }
-/* tree: device on top, guides hanging off a trunk, flasher set apart */
 aside nav.side { font-size: .95rem; }
 nav.side a { display: block; padding: .3rem .6rem; border-left: 2px solid transparent; color: var(--fg); text-decoration: none; }
 nav.side a:hover { background: var(--hover); }
@@ -92,7 +89,7 @@ nav.side a.ext { margin-top: .75rem; border-top: 1px solid var(--line); color: v
 .copy-code-btn:hover, .copy-code-btn:focus { opacity: 1; }
 .prose blockquote { margin: 1rem 0; padding: .25rem 1rem; background: var(--tile); border-left: 4px solid var(--edge); }
 .prose blockquote p:last-child { margin-bottom: 0; }
-/* GitHub alerts (`> [!NOTE]` etc.): a coloured edge and a label, so colour is not the only cue */
+/* alerts: coloured edge plus label, colour alone is not the cue */
 .prose blockquote[class*="markdown-alert-"] { padding: .5rem .75rem; border-left-width: 3px; }
 .prose blockquote[class*="markdown-alert-"]::before {
 	display: block;
@@ -124,7 +121,6 @@ details summary { padding: .5rem .75rem; background: var(--tile); font-weight: 6
 details[open] summary { border-bottom: 1px solid var(--line); }
 details > :not(summary) { margin: 0 .75rem .5rem; }
 
-/* contributors: avatar and login per person */
 .contrib { margin-top: 2rem; }
 .who { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
 .who li { margin: 0; }
@@ -145,7 +141,6 @@ footer p { margin: 0 0 .3rem; }
 .skip-link { position: absolute; left: -9999px; top: 0; z-index: 200; padding: .5rem 1rem; background: var(--bg); border: 1px solid var(--line); }
 .skip-link:focus { left: .5rem; top: .5rem; }
 
-/* search: a button in the bar, a palette over the page */
 .search-open {
 	display: flex; align-items: center; gap: .6rem;
 	margin-left: auto; padding: .3rem .5rem .3rem .7rem;
@@ -181,7 +176,7 @@ dialog.search-dialog::backdrop { background: rgb(0 0 0 / 60%); }
 
 @media (max-width: 900px) {
 	.layout { grid-template-columns: 1fr; gap: 1.5rem; }
-	/* on one column the tree root would repeat the page title: shrink it to a label */
+	/* root shrinks to a label, the h1 already says it */
 	nav.side a.root { font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
 	nav.side ul { margin-top: 0; }
 	.search-open { width: 100%; justify-content: space-between; margin-left: 0; }

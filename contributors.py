@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Write data/contributors.json from git history. Runs before `zola build` (see build.sh).
-
-Per page and per section, who touched it. GitHub logins come from noreply commit
-emails or contributors.map; anything else is credited by name without a link.
-"""
+"""Write data/contributors.json from git history, before zola build."""
 
 import json
 import os
@@ -103,13 +99,13 @@ def build():
                 continue
             rel_path = os.path.relpath(os.path.join(dirpath, filename), CONTENT).replace(os.sep, "/")
             people = commits_for(rel_path, mapping)
-            # a section's own file is read as a section, never through the pages map
+            # section indexes are read through the sections map
             if filename != "_index.md":
                 pages[rel_path] = people
             parts = rel_path.split("/")[:-1]
             for depth in range(len(parts) + 1):
                 per_dir.setdefault("/".join(parts[:depth]), []).append(people)
-    # the root aggregate is never rendered: the front page lists devices only
+    # no root aggregate, the front page only lists devices
     sections = {"/" + directory + "/": merge(groups) for directory, groups in per_dir.items() if directory}
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as out:

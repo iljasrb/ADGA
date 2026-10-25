@@ -1,8 +1,5 @@
-<!-- Pull requests are squash-merged. Keep it to one guide or one device. -->
-
 ## What this changes
 
-<!-- Which page, which device, what was wrong or missing. -->
 
 ## Hand-checked
 

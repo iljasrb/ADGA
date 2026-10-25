@@ -1,11 +1,11 @@
 #!/bin/sh
-# Build the site. On Cloudflare Pages: build command ./build.sh, output directory public.
+# build command on Cloudflare Pages; output directory is public
 set -eu
 cd "$(dirname "$0")"
 
 ZOLA_VERSION="${ZOLA_VERSION:-0.23.6}"
 
-# Contributors come from git history, so a shallow clone has to be deepened first.
+# attribution needs the full history
 if [ -d .git ] && [ -f .git/shallow ]; then
 	git fetch --unshallow --quiet || true
 fi

@@ -1,8 +1,4 @@
-"""Self-check for contributor attribution: python3 test_contributors.py
-
-Covers the parts that break silently: noreply logins, the map, bot filtering,
-co-author trailers, and section aggregation.
-"""
+"""python3 test_contributors.py"""
 
 from contributors import is_bot, login_of, merge, parse_log
 

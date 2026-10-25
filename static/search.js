@@ -1,5 +1,4 @@
-// Search palette over Zola's page index. The index is fetched on first open, not on every page.
-// Ranking and snippets live in search-core.mjs so they can be checked with node.
+// index is fetched on first open
 import { deviceOf, hrefOf, search, snippet } from "./search-core.mjs";
 
 const INDEX_URL = "/search_index.en.json";
@@ -27,7 +26,7 @@ if (dialog && input && list) {
       .then((response) => (response.ok ? response.json() : []))
       .catch(() => []));
 
-  // Append text, wrapping every case-insensitive match of q in <mark>. Text nodes only, no HTML.
+  // <mark> around matches; text nodes only, no innerHTML
   function markInto(node, text, q) {
     const lower = text.toLowerCase();
     let from = 0;
@@ -119,7 +118,7 @@ if (dialog && input && list) {
     if (event.target === dialog) dialog.close(); // click on the backdrop
   });
 
-  // drop ?q= on close, so closing the palette does not reopen it on reload
+  // drop ?q= on close so a reload does not reopen
   dialog.addEventListener("close", () => {
     const url = new URL(location.href);
     if (url.searchParams.has("q")) {
@@ -166,7 +165,7 @@ if (dialog && input && list) {
     }
   });
 
-  // ?q=... opens the palette with a query, so a search is a link someone can send.
+  // ?q= opens the palette with a query
   const initial = new URLSearchParams(location.search).get("q");
   if (initial) open(initial);
 }

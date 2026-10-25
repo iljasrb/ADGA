@@ -1,5 +1,3 @@
-// Self-check for search ranking and snippets: node test_search.mjs
-
 import assert from "node:assert/strict";
 import { deviceOf, hrefOf, search, snippet } from "./static/search-core.mjs";
 

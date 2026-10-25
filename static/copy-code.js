@@ -1,4 +1,3 @@
-// copy-code.js – adds a "Copy" button to every code block
 (() => {
   "use strict";
 
