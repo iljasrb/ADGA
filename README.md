@@ -1,4 +1,4 @@
-# android-device-guide-archive
+# ADGA
 
 Source of <https://devices.flac.moe>. Zola site. Content CC BY-SA 4.0, code MIT.
 
