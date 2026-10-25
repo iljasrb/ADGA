@@ -6,13 +6,15 @@
 {% set contributors = load_data(path="data/contributors.json") %}
 {% set people = contributors.pages[page.relative_path] %}
 {% set device = get_section(path=page.ancestors | last) %}
+{% set is_device = device.extra | get(key="device", default=false) %}
 {% set current = current_path %}
-{% set flasher = config.extra.flasher_url %}
 {% set verified_by = page.extra | get(key="verified_by", default="") %}
 {% set risk = page.extra | get(key="risk", default="") %}
+{% if is_device %}
 <div class="layout">
     <aside>{% include "partials/device-nav.html" %}</aside>
-    <article class="content">
+{% endif %}
+    <article class="content{% if not is_device %} narrow{% endif %}">
         <h1>{{ page.title }}</h1>
         {% if page.description %}<p class="meta">{{ page.description }}</p>{% endif %}
 
@@ -51,5 +53,5 @@
 
         {% include "partials/contributors.html" %}
     </article>
-</div>
+{% if is_device %}</div>{% endif %}
 {% endblock %}

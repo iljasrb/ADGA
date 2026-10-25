@@ -31,7 +31,7 @@ point of it, so the rules are about the guide text, not about style.
    up on the page.
 
 Elements available in a page (images, captions, floated screenshots, two-up, keys) are shown in
-`content/bronco/ui-preview.md`.
+`content/about/ui-preview.md` (live at `/about/ui-preview/`).
 
 Content is rendered as a Tera template before Markdown, so a code sample containing `{{` or `{%`
 has to be wrapped in `{% raw %}…{% endraw %}` or the build fails. Images go in `static/img/` and are

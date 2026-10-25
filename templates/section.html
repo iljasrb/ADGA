@@ -6,11 +6,13 @@
 {% set contributors = load_data(path="data/contributors.json") %}
 {% set people = contributors.sections[section.path] %}
 {% set device = section %}
+{% set is_device = section.extra | get(key="device", default=false) %}
 {% set current = current_path %}
-{% set flasher = config.extra.flasher_url %}
+{% if is_device %}
 <div class="layout">
     <aside>{% include "partials/device-nav.html" %}</aside>
-    <div class="content">
+{% endif %}
+    <div class="content{% if not is_device %} narrow{% endif %}">
         <h1>{{ section.title }}</h1>
         {% if section.description %}<p class="meta">{{ section.description }}</p>{% endif %}
         <div class="prose">{{ section.content | safe }}</div>
@@ -28,5 +30,5 @@
 
         {% include "partials/contributors.html" %}
     </div>
-</div>
+{% if is_device %}</div>{% endif %}
 {% endblock %}

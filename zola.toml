@@ -1,6 +1,6 @@
 base_url = "https://devices.flac.moe"
 title = "Android device guides"
-description = "Hand-written, hand-verified guides for Android devices."
+description = "Guides for Android devices."
 generate_feeds = true
 feed_filenames = ["rss.xml"]
 build_search_index = true
@@ -18,5 +18,4 @@ light_theme = "github-light"
 dark_theme = "github-dark"
 
 [extra]
-flasher_url = "https://flac.moe/bronco/flasher/"
 repo_url = "https://github.com/iljasrb/android-device-guide-archive"
