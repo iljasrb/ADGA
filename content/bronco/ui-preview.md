@@ -90,6 +90,38 @@ Finished. Total time: 2.729s
 
 </details>
 
+## Images
+
+A bare Markdown image is centred:
+
+![fastboot output](/img/example-wide.svg)
+
+A figure with a caption and an explicit size (width and height keep the layout from jumping):
+
+{{<figure src="img/example-wide.svg" alt="fastboot devices output listing one device" caption="One device, slot a." width="520" height="292"/>}}
+
+Floating right, the text wraps around it. Use `align="left"` for the other side:
+
+{{<figure src="img/example-tall.svg" alt="Recovery menu with apply update, factory reset and reboot" caption="Recovery menu." align="right" width="220" height="440"/>}}
+
+This paragraph sits next to the floated figure, so it shows how the text wraps. Both sides collapse to
+a normal block under 640px, where wrapping text beside an image is unreadable anyway.
+
+Two or three side by side:
+
+{% <cols> %}
+{{<figure src="img/example-wide.svg" alt="Before flashing" caption="Before"/>}}
+{{<figure src="img/example-wide.svg" alt="After flashing" caption="After"/>}}
+{% </cols> %}
+
+{% raw %}`{% <cols count="3"> %}`{% endraw %} for three. Image paths are relative to `static/`, so `src="img/example-wide.svg"`
+is `static/img/example-wide.svg`; captions and alt text are escaped.
+
+## Keys and highlighting
+
+Hold <kbd>Power</kbd> and <kbd>Volume Down</kbd> for ten seconds, then release. Inline text can be
+<mark>highlighted</mark>.
+
 ## Rules and footnotes
 
 ---

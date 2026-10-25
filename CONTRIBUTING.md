@@ -30,6 +30,13 @@ point of it, so the rules are about the guide text, not about style.
 4. Pull requests are **squash-merged**, so your commit keeps your authorship and your avatar shows
    up on the page.
 
+Elements available in a page (images, captions, floated screenshots, two-up, keys) are shown in
+`content/bronco/ui-preview.md`.
+
+Content is rendered as a Tera template before Markdown, so a code sample containing `{{` or `{%`
+has to be wrapped in `{% raw %}…{% endraw %}` or the build fails. Images go in `static/img/` and are
+referenced with `{{<figure src="img/name.png" alt="what it shows"/>}}`; `alt` is required.
+
 Bots and AI-agent pull requests are not accepted. If your commit email is not a GitHub noreply
 address, add `email = login` to `contributors.map` in the same pull request so you get linked.
 Attribution comes from git history; never add a contributor list to a page.

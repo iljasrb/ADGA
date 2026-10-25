@@ -1,0 +1,3 @@
+{% component cols(count="2") %}
+<div class="cols{% if count == "3" %} cols-3{% endif %}">{{ body }}</div>
+{% endcomponent cols %}

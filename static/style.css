@@ -110,8 +110,21 @@ nav.side a.ext { margin-top: .75rem; border-top: 1px solid var(--line); color: v
 .prose .markdown-alert-caution { border-left-color: var(--err); background: light-dark(#fff5f5, #2a1416); }
 .prose .markdown-alert-caution::before { content: "Caution"; color: var(--err); }
 .prose img { display: block; margin: 1rem auto; }
-.prose figure { margin: 1rem 0; }
+.prose figure { margin: 1.25rem 0; }
+.prose figure img { margin: 0 auto; }
 .prose figcaption { margin-top: .4rem; color: var(--muted); font-size: .85rem; text-align: center; }
+/* beside the text; shrink to the image, then capped so the text keeps room */
+.prose .fig-left, .prose .fig-right { max-width: min(22rem, 45%); }
+.prose .fig-left { float: left; margin: .3rem 1.25rem .75rem 0; }
+.prose .fig-right { float: right; margin: .3rem 0 .75rem 1.25rem; }
+/* block elements never wrap around a float, only text does */
+.prose h2, .prose h3, .prose h4, .prose pre, .prose table, .prose blockquote, .prose details, .prose .cols, .prose hr { clear: both; }
+.prose::after { content: ""; display: block; clear: both; }
+.prose .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1.25rem 0; }
+.prose .cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.prose .cols figure { margin: 0; }
+.prose kbd { padding: .1rem .35rem; border: 1px solid var(--edge); border-bottom-width: 2px; background: var(--tile); font: .85em var(--mono); }
+.prose mark { padding: 0 .1rem; background: light-dark(#fff3bf, #5c4a00); color: inherit; }
 .prose table { border-collapse: collapse; min-width: 50%; }
 .prose th, .prose td { padding: .4rem .6rem; border: 1px solid var(--line); text-align: left; }
 .prose thead { background: var(--tile); }
@@ -183,5 +196,7 @@ dialog.search-dialog::backdrop { background: rgb(0 0 0 / 60%); }
 }
 
 @media (max-width: 640px) {
+	.prose .fig-left, .prose .fig-right { float: none; width: auto; margin: 1.25rem 0; }
+	.prose .cols, .prose .cols-3 { grid-template-columns: 1fr; }
 	.prose table { display: block; overflow-x: auto; }
 }

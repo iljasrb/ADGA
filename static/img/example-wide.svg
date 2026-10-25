@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+<rect width="640" height="360" fill="#212529"/>
+<rect x="24" y="24" width="592" height="40" fill="#0242f2"/>
+<text x="40" y="52" font-family="monospace" font-size="20" fill="#fff">fastboot devices</text>
+<text x="40" y="120" font-family="monospace" font-size="18" fill="#f8f9fa">ZY22ABCDEF    fastboot</text>
+<text x="40" y="160" font-family="monospace" font-size="18" fill="#adb5bd">one device, slot a</text>
+</svg>

@@ -1,0 +1,6 @@
+{% component figure(src, alt, caption="", align="", width="", height="") %}
+<figure class="fig{% if align == "left" %} fig-left{% elif align == "right" %} fig-right{% endif %}">
+<img src="{{ get_url(path=src) }}" alt="{{ alt }}"{% if width %} width="{{ width }}"{% endif %}{% if height %} height="{{ height }}"{% endif %} loading="lazy" decoding="async">
+{% if caption %}<figcaption>{{ caption }}</figcaption>{% endif %}
+</figure>
+{% endcomponent figure %}

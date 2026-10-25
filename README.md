@@ -4,8 +4,8 @@ Source of <https://devices.flac.moe>. Zola site. Content CC BY-SA 4.0, code MIT.
 
 ```
 content/            one folder per device, one file per guide
-templates/          layout, indexes, guide page
-static/             style.css, search
+templates/          layout, indexes, guide page, components
+static/             style.css, search, img
 contributors.py     writes data/contributors.json from git history
 build.sh            contributors + zola build
 ```
