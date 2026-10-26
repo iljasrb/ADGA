@@ -20,9 +20,9 @@
 
         <p class="callout verified{% if not verified_by %} unverified{% endif %}">
             {% if verified_by %}
-            Hand-verified by <a href="https://github.com/{{ verified_by }}">@{{ verified_by }}</a> on <time datetime="{{ page.extra.verified_on }}">{{ page.extra.verified_on }}</time>
+            Verified by <a href="https://github.com/{{ verified_by }}">@{{ verified_by }}</a> on <time datetime="{{ page.extra.verified_on }}">{{ page.extra.verified_on }}</time>
             {% else %}
-            <strong>Not yet hand-verified.</strong>
+            <strong>Not yet verified.</strong>
             {% endif %}
             {% if page.updated %}· last updated <time datetime="{{ page.updated }}">{{ page.updated | date(format="%d %b %Y") }}</time>{% endif %}
         </p>
