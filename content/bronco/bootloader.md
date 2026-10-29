@@ -1,7 +1,7 @@
 +++
 title = "Bootloader unlock"
 description = "Unlocking/relocking bootloader for ThinkPhone"
-weight = 2
+weight = 3
 draft = false
 updated = 2026-10-26
 +++

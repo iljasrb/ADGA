@@ -1,7 +1,7 @@
 +++
 title = "Stock firmware"
 description = "Official stock factory firmware for ThinkPhone"
-weight = 4
+weight = 5
 draft = false
 updated = 2026-10-26
 +++

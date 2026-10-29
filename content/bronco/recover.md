@@ -1,7 +1,7 @@
 +++
 title = "Recover phone / EDL Flash"
 description = "Recovering phone from unbootable state: (hardbrick, softbrick/bootloop)"
-weight = 3
+weight = 4
 draft = false
 updated = 2026-10-26
 +++
