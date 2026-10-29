@@ -4,6 +4,10 @@ description = "Alternative recovery images for ThinkPhone"
 weight = 2
 draft = false
 updated = 2026-10-29
+
+[extra]
+verified_by = "iljasrb"
+verified_on = "2026-10-29"
 +++
 
 > [!IMPORTANT]
