@@ -3,7 +3,7 @@ title = "Custom Recoveries"
 description = "Alternative recovery images for ThinkPhone"
 weight = 2
 draft = false
-updated = 2026-10-29
+updated = 2026-11-6
 
 [extra]
 verified_by = "iljasrb"
@@ -16,6 +16,13 @@ verified_on = "2026-10-29"
 Recovery is a separate mode from system where user can flash updates, make backups and wipe partitions.
 Officially supported recoveries are maintained by the project itself,
 unofficial releases are managed outside the project by third-party developers.
+
+## Standalone
+
+- Skyward Recovery (BETA, Fork) (Unofficial)
+	- XDA Page [xdaforums.com/t/recovery-a17-ota-skyward-recovery-fork-for-the-motorola-thinkphone](https://xdaforums.com/t/recovery-a17-ota-skyward-recovery-fork-for-the-motorola-thinkphone.4807023/)
+	- Flash instructions: On XDA
+	- Bug tracker [GitHub issue tracker](https://github.com/iljasrb/skyward/issues)
 
 ## TWRP Based
 - AERA Recovery (BETA) (Unofficial, R1.0)
