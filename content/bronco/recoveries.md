@@ -3,7 +3,7 @@ title = "Custom Recoveries"
 description = "Alternative recovery images for ThinkPhone"
 weight = 2
 draft = false
-updated = 2026-11-6
+updated = 2026-11-06
 
 [extra]
 verified_by = "iljasrb"
